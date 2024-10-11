@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-MAINTAINER Matt Longman <git@mattlongman.com>
+MAINTAINER elodie ELIZALDE <elodie@cyberax.fr>
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
