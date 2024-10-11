@@ -1,6 +1,6 @@
 ---
 name: Hass.io Access Point
-version: 0.5.2.3
+version: 0.5.2.4
 slug: hassio-access-point
 description: Create a WiFi access point to directly connect devices to Home Assistant
 arch: [armhf, armv7, aarch64, amd64, i386]
@@ -20,11 +20,11 @@ options:
   address: 192.168.0.1
   netmask: 255.255.255.0
   broadcast: 192.168.0.255
-  interface: wlo1
+  interface: wlp2s0
   hide_ssid: false
   dhcp: true
-  dhcp_start_addr: 192.168.99.10
-  dhcp_end_addr: 192.168.99.20
+  dhcp_start_addr: 192.168.0.2
+  dhcp_end_addr: 192.168.0.254
   allow_mac_addresses: []
   deny_mac_addresses: []
   debug: 0
