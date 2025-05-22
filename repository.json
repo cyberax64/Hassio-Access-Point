@@ -1,5 +1,6 @@
 {
-  "name": "Hass.io Access Point par elodie",
+  "name": "Home Assistant Access Point",
   "url": "https://github.com/cyberax64/Hassio-Access-Point",
-  "maintainer": "elodie ELIZALDE <elodie@cyberax.fr>"
+  "maintainer": "elodie ELIZALDE <elodie@cyberax.fr>",
+  "description": "Create a WiFi access point to directly connect devices to Home Assistant. Compatible with x86, ARM and various hardware platforms."
 }
