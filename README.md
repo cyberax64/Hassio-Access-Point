@@ -1,67 +1,118 @@
-# Hass.io Access Point
-Use your hass.io host as a WiFi access point - perfect for off-grid and security focused installations.
+# Home Assistant Access Point
 
-## Main features
-- Create a WiFi access point with built-in (Raspberry Pi) or external WiFi (USB) cards (using hostapd)
-- Hidden or visible SSIDs
-- DHCP server (Optional. Uses dnsmasq)
-- MAC address filtering (allow/deny)
-- Internet routing for clients (Optional)
+Transform your Home Assistant device into a WiFi access point - perfect for off-grid installations, IoT device management, and security-focused setups.
 
+## Main Features
+
+- **Multi-architecture Support**: Works on x86, x86_64, ARM (Raspberry Pi and other SBCs)
+- **Automatic Hardware Detection**: Configures itself based on your hardware capabilities
+- **WiFi Access Point**: Create a WiFi network using built-in or external WiFi adapters
+- **Network Management**:
+  - Hidden or visible SSIDs
+  - DHCP server with customizable IP ranges
+  - MAC address filtering (allowlist/blocklist)
+  - Internet routing for connected clients
+  - Custom DNS server configuration
 
 ## Installation
 
-Please add
-`https://github.com/mattlongman/hassio-access-point` to your hass.io addon repositories list. If you're not sure how, see [instructions](https://www.home-assistant.io/hassio/installing_third_party_addons/) on the Home Assistant website.
+Add `https://github.com/cyberax64/Hassio-Access-Point` to your Home Assistant add-on repositories list. 
 
-## Config
+If you're not sure how, see [instructions](https://www.home-assistant.io/addons/installing_third_party_addons/) on the Home Assistant website.
 
-### Options
-- **ssid** (**required**): The name of your access point
-- **wpa_passphrase** (**required**): The passkey for your access point
-- **channel** (**required**): The WiFi channel to use
-- **address** (**required**): The address of your hass.io WiFi card/network
-- **netmask** (**required**): Subnet mask of the network
-- **broadcast** (**required**): Broadcast address of the network
-- **interface** (_optional_): Which wlan card to use. Default: wlan0
-- **hide_ssid** (_optional_): Whether SSID is visible or hidden. 0 = visible, 1 = hidden. Defaults to visible
-- **dhcp** (_optional_): Enable or disable DHCP server. 0 = disable, 1 = enable. Defaults to disabled
-- **dhcp_start_addr** (_optional_): Start address for DHCP range. Required if DHCP enabled
-- **dhcp_end_addr** (_optional_): End address for DHCP range. Required if DHCP enabled
-- **allow_mac_addresses** (_optional_): List of MAC addresses to allow. Note: if using allow, blocks everything not in list
-- **deny_mac_addresses** (_optional_): List of MAC addresses to block. Note: if using deny, allows everything not in list
-- **debug** (_optional_): Set logging level. 0 = basic output, 1 = show addon detail, 2 = same as 1 plus run hostapd in debug mode
-- **hostapd_config_override** (_optional_): List of hostapd config options to add to hostapd.conf (can be used to override existing options)
-- **client_internet_access** (_optional_): Provide internet access for clients. 1 = enable
-- **client_dns_override** (_optional_): Specify list of DNS servers for clients. Requires DHCP to be enabled. Note: Add-on will try to use DNS servers of the parent host by default.
-- **dnsmasq_config_override** (_optional_): List of dnsmasq config options to add to dnsmasq.conf (can be used to override existing options, as well as reserving IPs, e.g. `dhcp-host=12:34:56:78:90:AB,192.168.99.123`)
+## Configuration
 
-Note: use either allow or deny lists for MAC filtering. If using allow, deny will be ignored.
+### Basic Options
 
-### Example configuration
+| Option | Required | Description |
+|--------|----------|-------------|
+| `ssid` | Yes | The name of your WiFi network |
+| `wpa_passphrase` | Yes | The password for your WiFi network (minimum 8 characters) |
+| `channel` | Yes | The WiFi channel to use (1-13) |
+| `address` | Yes | The IP address for your access point (e.g., 192.168.0.1) |
+| `netmask` | Yes | Subnet mask of the network (e.g., 255.255.255.0) |
+| `broadcast` | Yes | Broadcast address of the network (e.g., 192.168.0.255) |
+| `interface` | No | Which wireless interface to use (default: wlan0) |
 
+### Advanced Options
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `hide_ssid` | No | Whether to hide the network SSID (true/false) |
+| `dhcp` | No | Enable or disable DHCP server (true/false) |
+| `dhcp_start_addr` | If DHCP enabled | Start address for DHCP range |
+| `dhcp_end_addr` | If DHCP enabled | End address for DHCP range |
+| `allow_mac_addresses` | No | List of MAC addresses to allow (blocks all others) |
+| `deny_mac_addresses` | No | List of MAC addresses to block (allows all others) |
+| `debug` | No | Set logging level (0=basic, 1=detailed, 2=debug mode) |
+| `client_internet_access` | No | Provide internet access for clients (true/false) |
+| `client_dns_override` | No | List of DNS servers for clients |
+| `hostapd_config_override` | No | Custom hostapd configuration options |
+| `dnsmasq_config_override` | No | Custom dnsmasq configuration options |
+
+**Note**: Use either `allow_mac_addresses` or `deny_mac_addresses` for MAC filtering. If using allow, deny will be ignored.
+
+### Example Configuration
+
+```yaml
+ssid: "HomeAssistant-AP"
+wpa_passphrase: "SecurePassword123"
+channel: 6
+address: "192.168.10.1"
+netmask: "255.255.255.0"
+broadcast: "192.168.10.255"
+interface: "wlan0"
+hide_ssid: false
+dhcp: true
+dhcp_start_addr: "192.168.10.10"
+dhcp_end_addr: "192.168.10.20"
+allow_mac_addresses: []
+deny_mac_addresses: ["ab:cd:ef:fe:dc:ba"]
+debug: 0
+hostapd_config_override: []
+client_internet_access: true
+client_dns_override: ["1.1.1.1", "8.8.8.8"]
 ```
-    "ssid": "AP-NAME",
-    "wpa_passphrase": "AP-PASSWORD",
-    "channel": "6",
-    "address": "192.168.10.1",
-    "netmask": "255.255.255.0",
-    "broadcast": "192.168.10.255",
-    "interface": "wlan0",
-    "hide_ssid": "1",
-    "dhcp": "1",
-    "dhcp_start_addr": "192.168.10.10",
-    "dhcp_end_addr": "192.168.10.20",
-    "allow_mac_addresses": [],
-    "deny_mac_addresses": ['ab:cd:ef:fe:dc:ba'],
-    "debug": "0",
-    "hostapd_config_override": [],
-    "client_internet_access": '1',
-    "client_dns_override": ['1.1.1.1', '8.8.8.8']
+
+## Hardware Compatibility
+
+This add-on has been optimized to work across multiple hardware platforms:
+
+- **x86/x86_64**: Standard PC hardware
+- **ARM**: Raspberry Pi (all models), and other ARM-based SBCs
+- **WiFi Adapters**: Compatible with most built-in and USB WiFi adapters
+
+The add-on automatically detects your hardware capabilities and adjusts its configuration accordingly.
+
+## Advanced Usage
+
+### Static IP Assignments
+
+You can assign static IPs to specific devices using the `dnsmasq_config_override` option:
+
+```yaml
+dnsmasq_config_override:
+  - "dhcp-host=12:34:56:78:90:AB,192.168.10.50"
+  - "dhcp-host=98:76:54:32:10:EF,192.168.10.51"
 ```
 
-### Device & OS compatibility
+### 5GHz Support
 
-New releases will always be tested on the latest Home Assistant OS using Raspberry Pi 3B+ and Pi 4, but existing versions won't be proactively tested when new Home Assistant OS/Supervisor versions are released. If a new HAOS/Supervisor version breaks something, please raise an issue.
+To use 5GHz instead of 2.4GHz (if your hardware supports it):
 
-This add-on should work with 32 & 64 bit HAOS, and has also been tested on Debian 10 with Home Assistant Supervised.
+```yaml
+hostapd_config_override:
+  - "hw_mode=a"
+  - "channel=36"
+```
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Increase the debug level to 2 for more detailed logs
+2. Check that your WiFi adapter supports AP mode
+3. Verify that the interface name is correct for your system
+4. Ensure your password is at least 8 characters long
+
+For more help, please open an issue on the GitHub repository.

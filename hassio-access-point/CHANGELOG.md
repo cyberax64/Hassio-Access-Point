@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.0] - 2025-05-22
+
+### Added
+- Improved hardware detection for better compatibility with x86 and ARM architectures
+- Automatic detection and configuration of WiFi capabilities
+- Modular code structure for better maintainability
+- Improved error handling and validation
+- Container health check
+- Better logging with more detailed information
+
+### Changed
+- Completely restructured codebase for better organization
+- Improved Dockerfile with better multi-architecture support
+- Updated configuration templates with better defaults
+- Renamed to "Home Assistant Access Point" for consistency
+- Improved network interface setup
+- Enhanced MAC address filtering implementation
+
+### Fixed
+- Various compatibility issues with different hardware platforms
+- Improved startup and shutdown procedures
+- Better handling of network interfaces
+- More robust DHCP and DNS configuration
+
 ## [0.5.2.1] - 2024-04-02
 
 ### Fixed
